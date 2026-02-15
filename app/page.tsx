@@ -1,4 +1,4 @@
-import { ShowcaseGrid } from "@/components/showcase-grid"
+import  ShowcaseGrid from "@/components/showcase-grid"
 
 export default function Page() {
   return (

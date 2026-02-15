@@ -1,4 +1,4 @@
-export default async function getBlogList() {
+export default async function getContentListGroupbyCategory() {
   const url = new URL(
     `${process.env.NEXT_PUBLIC_BASE_URL}/rcms-api/2/topics/list/group-by-category`
   )
