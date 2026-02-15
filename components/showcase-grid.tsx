@@ -3,7 +3,6 @@ import getContentListGroupbyCategory from '@/fetch/getContentListGroupbyCategory
 
 export default async function ShowcaseGrid() {
   const data = await getContentListGroupbyCategory()
-  console.log('list', data)
   return (
     <div className="flex flex-col gap-12">
       {data.map((item: any) => (
