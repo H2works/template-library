@@ -6,7 +6,7 @@ export default async function ShowcaseGrid() {
   return (
     <div className="flex flex-col gap-12">
       {data.map((item: any) => (
-        <CategorySection key={item.category.category_id} category={item.category.category_nm} items={item.list} />
+        <CategorySection key={item.category.category_id} category={item.category} items={item.list} />
       ))}
     </div>
   )
