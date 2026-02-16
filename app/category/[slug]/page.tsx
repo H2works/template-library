@@ -2,31 +2,14 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
 import { ShowcaseCard } from "@/components/showcase-card"
-import {
-  allCategories,
-  categoryToSlug,
-  slugToCategory,
-  getItemsByCategory,
-} from "@/lib/showcase-data"
+import getCategoryList from '@/fetch/getCategoryList'
+import getContentList from '@/fetch/getContentList'
 
-export function generateStaticParams() {
-  return allCategories.map((category) => ({
-    slug: categoryToSlug(category),
+export async function generateStaticParams() {
+  const {list} = await getCategoryList()
+  return list.map((item: any) => ({
+    slug: item.slug,
   }))
-}
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}) {
-  const { slug } = await params
-  const category = slugToCategory(slug)
-  if (!category) return { title: "Not Found" }
-  return {
-    title: `${category} - Template Library`,
-    description: `Browse ${category} templates. Find inspiration and source code for your next project.`,
-  }
 }
 
 export default async function CategoryPage({
@@ -34,11 +17,9 @@ export default async function CategoryPage({
 }: {
   params: Promise<{ slug: string }>
 }) {
-  const { slug } = await params
-  const category = slugToCategory(slug)
-  if (!category) notFound()
-
-  const items = getItemsByCategory(category, 180)
+  // params が Promise になっている場合に備えて await する
+  const resolvedParams = await params
+  const contents = await getContentList({contents_type:resolvedParams.slug})
 
   return (
     <main>
@@ -53,17 +34,17 @@ export default async function CategoryPage({
 
         <div className="mb-10 flex items-center gap-3">
           <h1 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            {category}
+            {contents.list[0].contents_type_nm}
           </h1>
           <span className="rounded-full bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground">
-            {items.length}
+            {contents.pageInfo.totalCnt}
           </span>
         </div>
-
-        {items.length > 0 ? (
+    
+        {contents.list.length > 0 ? (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((item) => (
-              <ShowcaseCard key={item.id} item={item} />
+            {contents.list.map((item: any) => (
+              <ShowcaseCard key={item.topics_id} item={item} />
             ))}
           </div>
         ) : (
