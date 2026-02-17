@@ -2,13 +2,16 @@ import { Suspense } from "react"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { SearchResults } from "@/components/search-results"
+import getTagList from "@/fetch/getTagList"
 
 export const metadata = {
   title: "Search - Template Library",
   description: "Search and filter templates by keyword and tags.",
 }
 
-export default function SearchPage() {
+export default async function SearchPage() {
+  const tagData = await getTagList()
+
   return (
     <main>
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
@@ -31,7 +34,7 @@ export default function SearchPage() {
             </div>
           }
         >
-          <SearchResults />
+          <SearchResults initialTags={tagData?.list || []} />
         </Suspense>
       </div>
     </main>

@@ -1,52 +1,84 @@
 "use client"
 
-import { useState, useMemo, useCallback, useEffect, useRef } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import { Search, X } from "lucide-react"
 import { TagFilter } from "@/components/tag-filter"
 import { ShowcaseCard } from "@/components/showcase-card"
-import { showcaseItems, allTags } from "@/lib/showcase-data"
+import getContentList from "@/fetch/getContentList"
 
-export function SearchResults() {
+type Tag = {
+  tag_id: number
+  tag_nm: string
+}
+
+interface SearchResultsProps {
+  initialTags: Tag[]
+}
+
+export function SearchResults({ initialTags }: SearchResultsProps) {
   const searchParams = useSearchParams()
   const router = useRouter()
 
   const initialQuery = searchParams.get("q") ?? ""
-  const initialTag = searchParams.get("tag") ?? ""
+  const initialTagParams = searchParams.getAll("tag")
 
+  const [inputValue, setInputValue] = useState(initialQuery)
   const [searchQuery, setSearchQuery] = useState(initialQuery)
-  const [selectedTags, setSelectedTags] = useState<Set<string>>(() => {
-    return initialTag ? new Set([initialTag]) : new Set()
-  })
 
-  // Initialize from URL on mount with multiple tags
-  useEffect(() => {
-    const tags = searchParams.getAll("tag")
-    if (tags.length > 0) {
-      setSelectedTags(new Set(tags))
-    }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  const [selectedTags, setSelectedTags] = useState<Set<string>>(
+    new Set(initialTagParams)
+  )
 
-  // Sync URL when state changes
+  const [items, setItems] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
+
+  // 🔹 URL同期（検索実行時のみ）
   useEffect(() => {
     const params = new URLSearchParams()
+
     if (searchQuery) params.set("q", searchQuery)
-    const tagArray = Array.from(selectedTags)
-    if (tagArray.length > 0) {
-      tagArray.forEach((t) => params.append("tag", t))
-    }
+
+    Array.from(selectedTags).forEach((t) => {
+      params.append("tag", t)
+    })
+
     const qs = params.toString()
     router.replace(`/search${qs ? `?${qs}` : ""}`, { scroll: false })
   }, [searchQuery, selectedTags, router])
 
+  // 🔥 API検索
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true)
+
+      try {
+        const data = await getContentList({
+          keyword: searchQuery,
+          tagIds: Array.from(selectedTags).map(Number),
+        })
+
+        setItems(data?.list || [])
+      } catch (err) {
+        console.error(err)
+        setItems([])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [searchQuery, selectedTags])
+
+  const executeSearch = useCallback(() => {
+    setSearchQuery(inputValue)
+  }, [inputValue])
+
   const handleToggleTag = useCallback((tag: string) => {
     setSelectedTags((prev) => {
       const next = new Set(prev)
-      if (next.has(tag)) {
-        next.delete(tag)
-      } else {
-        next.add(tag)
-      }
+      if (next.has(tag)) next.delete(tag)
+      else next.add(tag)
       return next
     })
   }, [])
@@ -55,92 +87,90 @@ export function SearchResults() {
     setSelectedTags(new Set())
   }, [])
 
-  const handleSearchChange = useCallback((value: string) => {
-    setSearchQuery(value)
-  }, [])
-
   const handleClearSearch = useCallback(() => {
+    setInputValue("")
     setSearchQuery("")
   }, [])
 
-  const filteredItems = useMemo(() => {
-    return showcaseItems.filter((item) => {
-      const matchesTags =
-        selectedTags.size === 0 ||
-        item.tags.some((tag) => selectedTags.has(tag))
-
-      const q = searchQuery.toLowerCase()
-      const matchesSearch =
-        q === "" ||
-        item.title.toLowerCase().includes(q) ||
-        item.tags.some((tag) => tag.toLowerCase().includes(q)) ||
-        item.category.toLowerCase().includes(q)
-
-      return matchesTags && matchesSearch
-    })
-  }, [selectedTags, searchQuery])
-
   return (
     <div className="flex flex-col gap-8">
-      {/* Search Input */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      {/* Search */}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault()
+          executeSearch()
+        }}
+        className="relative"
+      >
+        {/* 🔥 虫眼鏡クリックで検索実行 */}
+        <button
+          type="submit"
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+        >
+          <Search className="h-4 w-4" />
+        </button>
+
         <input
           type="text"
           placeholder="Search templates..."
-          value={searchQuery}
-          onChange={(e) => handleSearchChange(e.target.value)}
-          className="h-11 w-full rounded-lg border border-input bg-secondary pl-10 pr-10 text-sm text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none focus:ring-1 focus:ring-ring"
-          autoFocus
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          className="h-11 w-full rounded-lg border bg-secondary pl-10 pr-10 text-sm"
         />
-        {searchQuery && (
+
+        {inputValue && (
           <button
             type="button"
             onClick={handleClearSearch}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground transition-colors hover:text-foreground"
-            aria-label="Clear search"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
           >
             <X className="h-4 w-4" />
           </button>
         )}
-      </div>
+      </form>
 
-      {/* Tag Filter */}
+      {/* 🔥 ビルド時取得タグを使用 */}
       <TagFilter
-        tags={allTags}
+        tags={initialTags}
         selectedTags={selectedTags}
         onToggleTag={handleToggleTag}
         onClearAll={handleClearAll}
       />
 
-      {/* Result Count */}
-      <p className="text-sm text-muted-foreground">
-        {filteredItems.length}{" "}
-        {filteredItems.length === 1 ? "template" : "templates"} found
-      </p>
+      {/* Result count */}
+      {!loading && (
+        <p className="text-sm text-muted-foreground">
+          {items.length} {items.length === 1 ? "template" : "templates"} found
+        </p>
+      )}
 
-      {/* Results Grid */}
-      {filteredItems.length > 0 ? (
+      {/* Loading */}
+      {loading && (
+        <div className="py-20 text-center text-muted-foreground">
+          Loading...
+        </div>
+      )}
+
+      {/* Results */}
+      {!loading && items.length > 0 && (
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredItems.map((item) => (
-            <ShowcaseCard key={item.id} item={item} />
+          {items.map((item) => (
+            <ShowcaseCard key={item.topics_id} item={item} />
           ))}
         </div>
-      ) : (
+      )}
+
+      {/* Empty */}
+      {!loading && items.length === 0 && (
         <div className="flex flex-col items-center justify-center gap-3 py-20">
-          <p className="text-lg font-medium text-foreground">
-            No templates found
-          </p>
-          <p className="text-sm text-muted-foreground">
-            Try adjusting your search or filter criteria
-          </p>
+          <p className="text-lg font-medium">No templates found</p>
           <button
             type="button"
             onClick={() => {
               handleClearAll()
               handleClearSearch()
             }}
-            className="mt-2 rounded-lg bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground transition-colors hover:bg-accent"
+            className="mt-2 rounded-lg bg-secondary px-4 py-2 text-sm"
           >
             Clear all filters
           </button>

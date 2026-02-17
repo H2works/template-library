@@ -1,12 +1,16 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import type { Tag } from "@/lib/showcase-data"
+
+export type Tag = {
+  tag_id: number
+  tag_nm: string
+}
 
 interface TagFilterProps {
   tags: Tag[]
-  selectedTags: Set<string>
-  onToggleTag: (tag: string) => void
+  selectedTags: Set<string> // tag_idをstringで管理
+  onToggleTag: (tagId: string) => void
   onClearAll: () => void
 }
 
@@ -18,6 +22,7 @@ export function TagFilter({
 }: TagFilterProps) {
   return (
     <div className="flex flex-wrap items-center gap-2">
+      {/* Allボタン */}
       <button
         type="button"
         onClick={onClearAll}
@@ -30,13 +35,16 @@ export function TagFilter({
       >
         All
       </button>
+
       {tags.map((tag) => {
-        const isActive = selectedTags.has(tag)
+        const idStr = String(tag.tag_id)
+        const isActive = selectedTags.has(idStr)
+
         return (
           <button
-            key={tag}
+            key={tag.tag_id}
             type="button"
-            onClick={() => onToggleTag(tag)}
+            onClick={() => onToggleTag(idStr)}
             className={cn(
               "rounded-full border px-3 py-1.5 text-sm font-medium transition-all",
               isActive
@@ -44,7 +52,7 @@ export function TagFilter({
                 : "border-border bg-transparent text-muted-foreground hover:border-muted-foreground/50 hover:text-card-foreground"
             )}
           >
-            {tag}
+            {tag.tag_nm}
           </button>
         )
       })}
