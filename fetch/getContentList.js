@@ -1,3 +1,11 @@
+/**
+ * @param {Object} params
+ * @param {string} [params.contents_type]
+ * @param {number} [params.page]
+ * @param {number} [params.cnt]
+ * @param {string} [params.keyword]
+ * @param {number[]} [params.tagIds]
+ */
 export default async function getContentList({
   contents_type = "",
   page = 1,
