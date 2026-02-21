@@ -49,7 +49,9 @@ export default async function CategoryPage({
   // params が Promise になっている場合に備えて await する
   const resolvedParams = await params
   const contents = await getContentList({contents_type:resolvedParams.slug})
-
+  if (!contents.list || contents.list.length === 0) {
+    notFound()
+  }
   return (
     <main>
       <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
