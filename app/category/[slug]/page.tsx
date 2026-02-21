@@ -1,15 +1,44 @@
+import type { Metadata } from 'next'
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
 import { ShowcaseCard } from "@/components/showcase-card"
 import getCategoryList from '@/fetch/getCategoryList'
 import getContentList from '@/fetch/getContentList'
+import { siteConfig } from '@/lib/metadata'
 
 export async function generateStaticParams() {
   const {list} = await getCategoryList()
   return list.map((item: any) => ({
     slug: item.slug,
   }))
+}
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ slug: string }> }
+): Promise<Metadata> {
+  const resolvedParams = await params
+  const contents = await getContentList({ contents_type: resolvedParams.slug })
+
+  if (!contents.list || contents.list.length === 0) {
+    return {
+      title: 'Category Not Found | Template Library',
+    }
+  }
+
+  const categoryName = contents.list[0].contents_type_nm
+  const categoryCount = contents.pageInfo.totalCnt
+
+  return {
+    title: `${categoryName}の無料テンプレート一覧`,
+    description: `${categoryName}カテゴリの${categoryCount}件のテンプレートを掲載しています。${siteConfig.description}`,
+    openGraph: {
+      title: `${categoryName}の無料テンプレート一覧`,
+      description: `${categoryName}カテゴリのテンプレート一覧。${categoryCount}件のテンプレートを紹介しています。`,
+      url: `${siteConfig.url}/category/${resolvedParams.slug}`,
+      type: 'website',
+    },
+  }
 }
 
 export default async function CategoryPage({

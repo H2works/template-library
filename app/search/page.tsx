@@ -1,12 +1,20 @@
 import { Suspense } from "react"
+import type { Metadata } from 'next'
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { SearchResults } from "@/components/search-results"
 import getTagList from "@/fetch/getTagList"
+import { siteConfig } from "@/lib/metadata"
 
-export const metadata = {
-  title: "Search - Template Library",
-  description: "Search and filter templates by keyword and tags.",
+export const metadata: Metadata = {
+  title: `Search - Template Library`,
+  description: "テンプレートをキーワード・タグで検索できます。",
+  openGraph: {
+    title: `Search - Template Library`,
+    description: "テンプレートをキーワード・タグで検索できます。",
+    url: `${siteConfig.url}/search`,
+    type: 'website',
+  },
 }
 
 export default async function SearchPage() {
