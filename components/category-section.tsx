@@ -18,7 +18,7 @@ export function CategorySection({ category, items }: any) {
           <ChevronRight className="h-5 w-5 text-muted-foreground opacity-0 transition-all group-hover/heading:translate-x-0.5 group-hover/heading:opacity-100" />
         </Link>
         <span className="rounded-full bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground">
-          {items.length}
+          {category.cnt}
         </span>
       </div>
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
