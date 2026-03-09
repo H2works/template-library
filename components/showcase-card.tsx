@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { ExternalLink, Github } from "lucide-react"
+import { ExternalLink, Github, Code } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 
 export function ShowcaseCard({ item }: any) {
@@ -18,24 +18,39 @@ export function ShowcaseCard({ item }: any) {
         />
         <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/20" />
         <div className="absolute right-3 top-3 flex items-center gap-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-          <a
-            href={item.demo_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110"
-            aria-label={`View demo of ${item.subject}`}
-          >
-            <ExternalLink className="h-4 w-4" />
-          </a>
-          <a
-            href={item.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110"
-            aria-label={`View source code of ${item.subject} on GitHub`}
-          >
-            <Github className="h-4 w-4" />
-          </a>
+          {item.demo_url && (
+            <a
+              href={item.demo_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110"
+              aria-label={`View demo of ${item.subject}`}
+            >
+              <ExternalLink className="h-4 w-4" />
+            </a>
+          )}
+          {item.github && (
+            <a
+              href={item.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110"
+              aria-label={`View source code of ${item.subject} on GitHub`}
+            >
+              <Github className="h-4 w-4" />
+            </a>
+          )}
+          {item.source && (
+            <a
+              href={item.source}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-110"
+              aria-label={`View source code of ${item.subject}`}
+            >
+              <Code className="h-4 w-4" />
+            </a>
+          )}
         </div>
       </div>
 
@@ -58,24 +73,39 @@ export function ShowcaseCard({ item }: any) {
         </div>
 
         <div className="mt-auto flex items-center gap-3 border-t border-border pt-3">
-          <a
-            href={item.demo_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-card-foreground"
-          >
-            <ExternalLink className="h-3.5 w-3.5" />
-            <span>Demo</span>
-          </a>
-          <a
-            href={item.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-card-foreground"
-          >
-            <Github className="h-3.5 w-3.5" />
-            <span>Source</span>
-          </a>
+          {item.demo_url && (
+            <a
+              href={item.demo_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-card-foreground"
+            >
+              <ExternalLink className="h-3.5 w-3.5" />
+              <span>Demo</span>
+            </a>
+          )}
+          {item.github && (
+            <a
+              href={item.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-card-foreground"
+            >
+              <Github className="h-3.5 w-3.5" />
+              <span>GitHub</span>
+            </a>
+          )}
+          {item.source && (
+            <a
+              href={item.source}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-card-foreground"
+            >
+              <Code className="h-3.5 w-3.5" />
+              <span>Source</span>
+            </a>
+          )}
         </div>
       </div>
     </div>
