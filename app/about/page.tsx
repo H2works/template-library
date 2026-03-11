@@ -55,6 +55,21 @@ export default function AboutPage() {
                         </p>
                     </section>
 
+                    {/* New Section: source explanation */}
+                    <section>
+                        <h2 className="mb-4 text-2xl font-bold text-foreground">
+                            無料テンプレートの出典について
+                        </h2>
+                        <p className="text-lg leading-relaxed text-muted-foreground">
+                            当サイトで紹介している“無料テンプレート”は大きく３つに分かれます。
+                            ソースコードが GitHub で公開されているオープンソースのもの、
+                            各種 CMS／SaaS が無償で配布している公式テンプレート、
+                            そしてテンプレート販売サイトが無償提供するサンプルなどです。
+                            いずれも利用条件は各プロジェクト・サービスに準じていますので、
+                            使う際はリンク先のライセンスや利用規約をご確認ください。
+                        </p>
+                    </section>
+
                     {/* Section 4 */}
                     <section>
                         <h2 className="mb-4 text-2xl font-bold text-foreground">
