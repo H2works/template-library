@@ -32,6 +32,7 @@ export function SearchResults({ initialTags }: SearchResultsProps) {
 
   const [items, setItems] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
+  const [totalCount, setTotalCount] = useState(0)
 
   // 🔹 URL同期（検索実行時のみ）
   useEffect(() => {
@@ -59,6 +60,7 @@ export function SearchResults({ initialTags }: SearchResultsProps) {
         })
 
         setItems(data?.list || [])
+        setTotalCount(data?.pageInfo?.totalCnt || 0)
       } catch (err) {
         console.error(err)
         setItems([])
@@ -140,7 +142,7 @@ export function SearchResults({ initialTags }: SearchResultsProps) {
       {/* Result count */}
       {!loading && (
         <p className="text-sm text-muted-foreground">
-          {items.length} {items.length === 1 ? "template" : "templates"} found
+          {totalCount} {totalCount === 1 ? "template" : "templates"} found
         </p>
       )}
 
