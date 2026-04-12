@@ -40,11 +40,19 @@ export const defaultMetadata = {
     siteName: siteConfig.name,
     title: siteConfig.title,
     description: siteConfig.description,
+    images: [
+      {
+        url: '/ogp_template_library.png',
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: siteConfig.title,
     description: siteConfig.description,
+    images: ['/ogp_template_library.png'],
   },
   alternates: {
     canonical: siteConfig.url,
