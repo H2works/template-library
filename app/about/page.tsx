@@ -4,6 +4,9 @@ import { siteConfig } from '@/lib/metadata'
 export const metadata: Metadata = {
     title: `About - ${siteConfig.title}`,
     description: 'About Template Library - AI Pair Coding対応の無料フロントエンドテンプレート',
+    alternates: {
+        canonical: `${siteConfig.url}/about`,
+    },
     openGraph: {
         title: `About - ${siteConfig.title}`,
         description: 'About Template Library - AI Pair Coding対応の無料フロントエンドテンプレート',

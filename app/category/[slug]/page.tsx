@@ -32,6 +32,9 @@ export async function generateMetadata(
   return {
     title: `${categoryName}の無料テンプレート一覧`,
     description: `${categoryName}カテゴリの${categoryCount}件のテンプレートを掲載しています。${siteConfig.description}`,
+    alternates: {
+      canonical: `${siteConfig.url}/category/${resolvedParams.slug}`,
+    },
     openGraph: {
       title: `${categoryName}の無料テンプレート一覧`,
       description: `${categoryName}カテゴリのテンプレート一覧。${categoryCount}件のテンプレートを紹介しています。`,

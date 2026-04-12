@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /_next/
-
+Disallow: /search
 Sitemap: https://template-library.h2works.xyz/sitemap.xml

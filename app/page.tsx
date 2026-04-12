@@ -5,6 +5,9 @@ import { siteConfig } from '@/lib/metadata'
 export const metadata: Metadata = {
   title: siteConfig.title,
   description: siteConfig.description,
+  alternates: {
+    canonical: siteConfig.url,
+  },
   openGraph: {
     title: siteConfig.title,
     description: siteConfig.description,

@@ -5,6 +5,9 @@ import ContactForm from '@/components/contact-form'
 export const metadata: Metadata = {
   title: `Contact - ${siteConfig.title}`,
   description: 'Contact us - Template Library',
+  alternates: {
+    canonical: `${siteConfig.url}/contact`,
+  },
   openGraph: {
     title: `Contact - ${siteConfig.title}`,
     description: 'Contact us - Template Library',

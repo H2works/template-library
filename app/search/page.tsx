@@ -9,6 +9,9 @@ import { siteConfig } from "@/lib/metadata"
 export const metadata: Metadata = {
   title: `Search - Template Library`,
   description: "テンプレートをキーワード・タグで検索できます。",
+  alternates: {
+    canonical: `${siteConfig.url}/search`,
+  },
   openGraph: {
     title: `Search - Template Library`,
     description: "テンプレートをキーワード・タグで検索できます。",
