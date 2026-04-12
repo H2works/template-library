@@ -11,7 +11,7 @@ export function ShowcaseCard({ item }: any) {
       <div className="relative aspect-[16/10] overflow-hidden bg-secondary">
         <Image
           src={item.image}
-          alt={`${item.title} screenshot`}
+          alt={`${item.subject} screenshot`}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
