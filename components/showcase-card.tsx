@@ -56,7 +56,7 @@ export function ShowcaseCard({ item }: any) {
 
       <div className="flex flex-1 flex-col gap-3 p-4">
         <h3 className="text-base font-semibold leading-tight text-card-foreground">
-          {item.title}
+          {item.subject}
         </h3>
 
         <div className="flex flex-wrap gap-1.5">
