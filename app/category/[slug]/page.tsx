@@ -28,16 +28,21 @@ export async function generateMetadata(
 
   const categoryName = contents.list[0].contents_type_nm
   const categoryCount = contents.pageInfo.totalCnt
+  const categoryDescription = contents.list[0].contents_type_ext_col_01
 
   return {
     title: `${categoryName}の無料テンプレート一覧`,
-    description: `${categoryName}カテゴリの${categoryCount}件のテンプレートを掲載しています。${siteConfig.description}`,
+    description: categoryDescription
+      ? categoryDescription
+      : `${categoryName}カテゴリの${categoryCount}件のテンプレートを掲載しています。${siteConfig.description}`,
     alternates: {
       canonical: `${siteConfig.url}/category/${resolvedParams.slug}`,
     },
     openGraph: {
       title: `${categoryName}の無料テンプレート一覧`,
-      description: `${categoryName}カテゴリのテンプレート一覧。${categoryCount}件のテンプレートを紹介しています。`,
+      description: categoryDescription
+        ? categoryDescription
+        : `${categoryName}カテゴリのテンプレート一覧。${categoryCount}件のテンプレートを紹介しています。`,
       url: `${siteConfig.url}/category/${resolvedParams.slug}`,
       type: 'website',
     },
@@ -49,12 +54,14 @@ export default async function CategoryPage({
 }: {
   params: Promise<{ slug: string }>
 }) {
-  // params が Promise になっている場合に備えて await する
   const resolvedParams = await params
   const contents = await getContentList({contents_type:resolvedParams.slug})
   if (!contents.list || contents.list.length === 0) {
     notFound()
   }
+
+  const categoryDescription = contents.list[0].contents_type_ext_col_01
+
   return (
     <main>
       <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
@@ -66,7 +73,7 @@ export default async function CategoryPage({
           <span>Back to all templates</span>
         </Link>
 
-        <div className="mb-10 flex items-center gap-3">
+        <div className="mb-4 flex items-center gap-3">
           <h1 className="text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             {contents.list[0].contents_type_nm}
           </h1>
@@ -74,7 +81,13 @@ export default async function CategoryPage({
             {contents.pageInfo.totalCnt}
           </span>
         </div>
-    
+
+        {categoryDescription && (
+          <p className="mb-10 text-muted-foreground">
+            {categoryDescription}
+          </p>
+        )}
+
         {contents.list.length > 0 ? (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {contents.list.map((item: any) => (
