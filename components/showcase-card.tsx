@@ -6,6 +6,7 @@ import { ExternalLink, Github, Code } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 
 export function ShowcaseCard({ item }: any) {
+  //console.log("ShowcaseCard item:", item) // デバッグ用ログ
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-lg border border-border bg-card transition-all duration-300 hover:border-muted-foreground/30 hover:shadow-lg hover:shadow-black/20">
       <div className="relative aspect-[16/10] overflow-hidden bg-secondary">
@@ -58,6 +59,12 @@ export function ShowcaseCard({ item }: any) {
         <h3 className="text-base font-semibold leading-tight text-card-foreground">
           {item.subject}
         </h3>
+
+        {item.description && (
+          <p className="text-sm text-muted-foreground">
+            {item.description}
+          </p>
+        )}
 
         <div className="flex flex-wrap gap-1.5">
           {item.tags.map((tag: any) => (
