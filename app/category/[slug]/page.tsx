@@ -45,6 +45,13 @@ export async function generateMetadata(
         : `${categoryName}カテゴリのテンプレート一覧。${categoryCount}件のテンプレートを紹介しています。`,
       url: `${siteConfig.url}/category/${resolvedParams.slug}`,
       type: 'website',
+      images: [
+        {
+          url: `${siteConfig.url}/ogp_template_library.png`,
+          width: 1200,
+          height: 630,
+        },
+      ],
     },
   }
 }

@@ -13,6 +13,13 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     url: siteConfig.url,
     type: 'website',
+    images: [
+      {
+        url: `${siteConfig.url}/ogp_template_library.png`,
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
 }
 
