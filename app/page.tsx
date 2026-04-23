@@ -31,9 +31,11 @@ export default function Page() {
         <h1 className="text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
           無料ホームページテンプレート
         </h1>
-        <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-          商用利用可能な無料ホームページテンプレートを厳選して掲載。
-          カテゴリやタグで絞り込みながら、あなたの制作に最適なデザインを見つけられます。
+        <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+          HTML・CSS・Tailwind・Next.jsなど様々な技術スタックに対応し、ダウンロードしてすぐ使えるデザインを一覧で比較できます。
+          <br /><br />
+          また、Jamstack構成やヘッドレスCMS（microCMS・Contentfulなど）に対応したテンプレートも掲載しており、モダンなWeb制作にも活用できます。
+          ランディングページ（LP）やコーポレートサイト、ポートフォリオなど用途別に探せるため、初心者から制作会社まで幅広く対応しています。
         </p>
       </section>
 

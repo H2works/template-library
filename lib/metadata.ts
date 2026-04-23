@@ -2,7 +2,7 @@ export const siteConfig = {
   name: 'Template Library',
   title: '無料ホームページテンプレート | Template Library',
   description:
-    '商用利用可能な無料ホームページテンプレートを厳選して掲載。カテゴリやタグで絞り込みながら、あなたの制作に最適なデザインを見つけられます。',
+    'HTML・CSS・Tailwind・Next.jsなど様々な技術スタックに対応し、ダウンロードしてすぐ使えるデザインを一覧で比較できます。また、Jamstack構成やヘッドレスCMS（microCMS・Contentfulなど）に対応したテンプレートも掲載しており、モダンなWeb制作にも活用できます。 ランディングページ（LP）やコーポレートサイト、ポートフォリオなど用途別に探せるため、初心者から制作会社まで幅広く対応しています。',
   url: 'https://template-library.h2works.xyz',
   locale: 'ja_JP',
   icon: '/favicon.ico',
