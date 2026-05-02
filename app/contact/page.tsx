@@ -13,6 +13,7 @@ export const metadata: Metadata = {
     description: 'Contact us - Template Library',
     url: `${siteConfig.url}/contact`,
     type: 'website',
+    siteName: siteConfig.name,
     images: [
       {
         url: `${siteConfig.url}/ogp_template_library.png`,

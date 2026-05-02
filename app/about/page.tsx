@@ -12,6 +12,7 @@ export const metadata: Metadata = {
         description: 'About Template Library - AI Pair Coding対応の無料フロントエンドテンプレート',
         url: `${siteConfig.url}/about`,
         type: 'website',
+        siteName: siteConfig.name,
         images: [
           {
             url: `${siteConfig.url}/ogp_template_library.png`,

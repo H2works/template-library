@@ -17,6 +17,7 @@ export const metadata: Metadata = {
     description: "テンプレートをキーワード・タグで検索できます。",
     url: `${siteConfig.url}/search`,
     type: 'website',
+    siteName: siteConfig.name,
     images: [
       {
         url: `${siteConfig.url}/ogp_template_library.png`,
